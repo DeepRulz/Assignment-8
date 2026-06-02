@@ -1,0 +1,23 @@
+### GET request to example server
+GET http://localhost:5000/
+###
+POST http://localhost:5000/api/todos
+content-type:application/json
+
+{
+  "title": "Learn MERN Stack ",
+  "description": "Tutedude"
+}
+
+###
+GET http://localhost:5000/api/todos
+###
+PATCH http://localhost:5000/api/todos/6a1c2b9944ccb8644eaca56c
+content-type:application/json
+
+{
+  "title": "Learn MongoDB",
+  "description": "Tutedude"
+}
+###
+DELETE http://localhost:5000/api/todos/6a1c2b9944ccb8644eaca56c
