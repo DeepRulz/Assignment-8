@@ -14,3 +14,17 @@ export const updateTodo = (id, todoData) =>
 
 export const deleteTodo = (id) =>
     API.delete(`/${id}`);
+
+export const searchTodo = (query) =>
+    API.get(`/search?q=${query}`);
+
+export const updateStatus = (
+    id,
+    status
+) =>
+    API.patch(
+        `/${id}/status`,
+        {
+            status
+        }
+    );

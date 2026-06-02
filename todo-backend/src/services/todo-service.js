@@ -20,3 +20,50 @@ exports.updateTodo = async (id,updatedData) => {
 exports.deleteTodo = async (id) => {
     return await Todo.findByIdAndDelete(id)
 }
+
+exports.updateStatus = async (id, status) => {
+    try {
+
+        const todo = await Todo.findByIdAndUpdate(
+            id,
+            { status: status },
+            { new: true }
+        );
+
+        return todo;
+
+    } catch (error) {
+        throw error;
+    }
+};
+
+exports.searchTodo = async (searchTerm) => {
+
+    try {
+
+        const todo = await Todo.find({
+            $or: [
+                {
+                    title: {
+                        $regex: searchTerm,
+                        $options: "i"
+                    }
+                },
+                {
+                    description: {
+                        $regex: searchTerm,
+                        $options: "i"
+                    }
+                }
+            ]
+        });
+
+        return todo;
+
+    } catch (error) {
+
+        throw error;
+
+    }
+
+};

@@ -1,4 +1,4 @@
-function TodoList({ todos, onEdit, onDelete }) {
+function TodoList({ todos, onEdit, onDelete,onStatusChange }) {
 
     if (todos.length === 0) {
         return (
@@ -25,6 +25,38 @@ function TodoList({ todos, onEdit, onDelete }) {
                     <p className="mt-2 text-gray-600">
                         {todo.description}
                     </p>
+                    <div className="mt-3">
+
+                        <label className="mr-2 text-sm">
+                            Status:
+                        </label>
+
+                        <select
+                            value={todo.status}
+                            onChange={(e) =>
+                                onStatusChange(
+                                    todo._id,
+                                    e.target.value
+                                )
+                            }
+                            className="rounded border p-2"
+                        >
+                            <option value="pending">
+                                Pending
+                            </option>
+
+                            <option value="in-progress">
+                                In Progress
+                            </option>
+
+                            <option value="completed">
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </div>
+
 
                     <div className="mt-4 flex gap-3">
 

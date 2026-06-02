@@ -112,3 +112,75 @@ exports.deleteTodo = async (req, res) => {
         });
     }
 };
+
+exports.updateStatus = async (req, res) => {
+
+    try {
+
+        const id = req.params.id;
+        const status = req.body.status;
+
+        if (
+            status !== "pending" &&
+            status !== "in-progress" &&
+            status !== "completed"
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid status"
+            });
+        }
+
+        const todo = await todoService.updateStatus(
+            id,
+            status
+        );
+
+        if (!todo) {
+            return res.status(404).json({
+                success: false,
+                message: "Todo not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Status updated",
+            data: todo
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+
+};
+
+exports.searchTodo = async (req, res) => {
+
+    try {
+
+        const q = req.query.q;
+
+        const todos =
+            await todoService.searchTodo(q);
+
+        res.status(200).json({
+            success: true,
+            data: todos
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+
+};

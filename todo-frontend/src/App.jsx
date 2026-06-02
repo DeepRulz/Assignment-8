@@ -8,7 +8,9 @@ import {
     getTodos,
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    searchTodo,
+    updateStatus
 } from "./services/todoApi";
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
     const [todos, setTodos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingTodo, setEditingTodo] = useState(null);
+    const [searchText, setSearchText] = useState("");
+    const [error, setError] = useState("");
 
     const fetchTodos = async () => {
         try {
@@ -34,7 +38,52 @@ function App() {
     useEffect(() => {
         fetchTodos();
     }, []);
+    const handleSearch = async () => {
 
+        try {
+
+            if (searchText.trim() === "") {
+
+                fetchTodos();
+                return;
+
+            }
+
+            const response =
+                await searchTodo(searchText);
+
+            setTodos(response.data.data);
+
+        } catch (error) {
+
+            setError("Search failed");
+
+        }
+
+    };
+    const handleStatusChange = async (
+        id,
+        status
+    ) => {
+
+        try {
+
+            await updateStatus(
+                id,
+                status
+            );
+
+            fetchTodos();
+
+        } catch (error) {
+
+            setError(
+                "Could not update status"
+            );
+
+        }
+
+    };
     const handleSubmit = async (todoData) => {
 
         try {
@@ -87,7 +136,32 @@ function App() {
                 <h1 className="mb-8 text-center text-4xl font-bold">
                     Todo Manager
                 </h1>
+                {
+                    error &&
+                    <div className="mb-4 rounded bg-red-100 p-3 text-red-700">
+                        {error}
+                    </div>
+                }
+                <div className="mb-6 flex gap-2">
 
+                    <input
+                        type="text"
+                        placeholder="Search todos..."
+                        value={searchText}
+                        onChange={(e) =>
+                            setSearchText(e.target.value)
+                        }
+                        className="flex-1 rounded border p-2"
+                    />
+
+                    <button
+                        onClick={handleSearch}
+                        className="rounded bg-blue-500 px-4 py-2 text-white"
+                    >
+                        Search
+                    </button>
+
+                </div>
                 <TodoForm
                     onSubmit={handleSubmit}
                     editingTodo={editingTodo}
@@ -102,6 +176,7 @@ function App() {
                         todos={todos}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        onStatusChange={handleStatusChange}
                     />
                 )}
 
