@@ -28,7 +28,11 @@ function App() {
             setTodos(response.data.data);
         }
         catch (error) {
-            console.error(error);
+
+            setError(
+                "Could not load todos"
+            );
+
         }
         finally {
             setLoading(false);
@@ -101,12 +105,17 @@ function App() {
 
                 await createTodo(todoData);
             }
-
+            setError("");
             fetchTodos();
 
         }
         catch (error) {
-            console.error(error);
+
+            setError(
+                error.response?.data?.message ||
+                "Could not save todo"
+            );
+
         }
     };
 
@@ -119,12 +128,17 @@ function App() {
         try {
 
             await deleteTodo(id);
-
+            setError("");
             fetchTodos();
 
         }
         catch (error) {
-            console.error(error);
+
+            setError(
+                error.response?.data?.message ||
+                "Could not delete todo"
+            );
+
         }
     };
 
